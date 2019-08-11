@@ -3,10 +3,11 @@ package main;
 import ui.Home;
 
 public class Main {
-	//创建logger
+	// 创建logger
 //	private static Logger logger=LogManager.getLogger();
 	public static void main(String[] args) {
-		new Home(); 
-		
+
+		new Home();
+
 	}
 }
