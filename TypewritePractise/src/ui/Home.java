@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -8,14 +9,11 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,7 +32,7 @@ public class Home {
 	long startTime;
 	int rightCount = 0;
 	int wrongCount = 0;
-	int groupSize = 5;
+	int groupSize = 100;
 	String wrongChars = "";
 	// 表格
 	DefaultTableModel model = new DefaultTableModel();
@@ -73,8 +71,6 @@ public class Home {
 	JLabel showWrongChars = new JLabel();
 	// 界面容器
 	JFrame frame = new JFrame();
-	JPanel north = new JPanel();
-	JPanel south = new JPanel();
 
 	// 构造方法
 	public Home() {
@@ -86,24 +82,30 @@ public class Home {
 		// 默认关闭窗口设置
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// 向容器中添加组件
-		north.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
-		north.add(showTimeCount);
-		north.add(showRightCount);
-		north.add(showWrongCount);
-		south.add(showWrongChars);
+
 		frame.setLayout(new BorderLayout());
-		frame.add(north, BorderLayout.NORTH);
+		frame.add(getNorth(), BorderLayout.NORTH);
 		frame.add(getSouth(), BorderLayout.SOUTH);
 		frame.add(getCenter(), BorderLayout.CENTER);
 		// 显示
 		frame.setVisible(true);
 		// 功能方法
 		frame.requestFocus();
+		setNextRandomChar();
 		addListener();
 		t.start();
 		initCount();
 	}
-
+	private JPanel getNorth()
+	{
+		JPanel north = new JPanel();
+		north.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+		north.add(showTimeCount);
+		north.add(showRightCount);
+		north.add(showWrongCount);
+		north.setBackground(Color.WHITE);
+		return north;
+	}
 	private JPanel getCenter() {
 		JPanel center = new JPanel() {
 			/**
@@ -112,16 +114,19 @@ public class Home {
 			private static final long serialVersionUID = 1L;
 
 			public void paint(Graphics g) {
+				super.paint(g);
 				int size = 50;
 				g.setFont(new Font("Consolas", Font.PLAIN, size));
 				g.drawString(chars[target] + "", frame.getWidth() / 2 - size / 2,
 						(int) (frame.getHeight() * (1 - 0.618)));
 			};
 		};
+		center.setBackground(Color.WHITE);
 		return center;
 	}
 
 	private JPanel getSouth() {
+		JPanel south = new JPanel();
 		Vector<String> columnNames = new Vector<>();
 		columnNames.add("用时");
 		columnNames.add("正确个数");
@@ -131,6 +136,7 @@ public class Home {
 		south.setLayout(new BorderLayout());
 		south.add(showWrongChars, BorderLayout.NORTH);
 		south.add(timeCountTable, BorderLayout.SOUTH);
+		south.setBackground(Color.WHITE);
 		return south;
 	}
 
