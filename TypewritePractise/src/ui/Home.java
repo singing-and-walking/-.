@@ -9,6 +9,10 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -23,6 +27,9 @@ import org.apache.logging.log4j.Logger;
 public class Home {
 	// 创建logger
 	private Logger logger = LogManager.getLogger();
+	// 记录文件
+	FileWriter writer;
+	DateFormat df_dateTime = DateFormat.getDateTimeInstance();
 	// 同步对象
 	// 获取屏幕分辨率
 	private final Dimension dScreen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -74,6 +81,12 @@ public class Home {
 
 	// 构造方法
 	public Home() {
+		try {
+			writer = new FileWriter("record.txt", true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// 非全屏时尺寸和位置
 		frame.setSize(width / 2, height / 2);
 		frame.setLocationRelativeTo(null);
@@ -96,8 +109,8 @@ public class Home {
 		t.start();
 		initCount();
 	}
-	private JPanel getNorth()
-	{
+
+	private JPanel getNorth() {
 		JPanel north = new JPanel();
 		north.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
 		north.add(showTimeCount);
@@ -106,6 +119,7 @@ public class Home {
 		north.setBackground(Color.WHITE);
 		return north;
 	}
+
 	private JPanel getCenter() {
 		JPanel center = new JPanel() {
 			/**
@@ -204,6 +218,16 @@ public class Home {
 			data.add(row);
 			timeCountTable.updateUI();
 			initCount();
+			// 写入记录文件
+			try {
+				Date date = new Date(System.currentTimeMillis());
+				writer.write(row.get(0) + "\t" + row.get(1) + "\t" + row.get(2) + "\t" + row.get(3) + "\t练习日期："
+						+ df_dateTime.format(date) + "\n");
+				writer.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
