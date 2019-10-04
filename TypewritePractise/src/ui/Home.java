@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class Home {
 	// 创建logger
 	private Logger logger = LogManager.getLogger();
+	
 	// 记录文件
 	FileWriter writer;
 	DateFormat df_dateTime = DateFormat.getDateTimeInstance();
